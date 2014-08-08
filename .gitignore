@@ -164,3 +164,4 @@ node_modules/
 
 # TSD
 typings/
+/ts-bundle/ts-bundle/README.md
