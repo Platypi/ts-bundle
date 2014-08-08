@@ -7,7 +7,6 @@ Bundle all your TypeScript files into 1 file. Useful for packaging library compo
 ```javascript
 var bundle = require("ts-bundle");
 
-// options is optional
 bundle({
     src: 'index.html',
     dest: 'out.ts'
