@@ -93,7 +93,7 @@ function compress(config?: globals.IConfig, callback?: (err) => void) {
             var licenseFile = path.resolve(license),
                 licenseData = fs.readFileSync(licenseFile, 'utf8'),
                 lines = licenseData.split(/\r\n|\n/),
-                regex = /(.*)v\d+\.\d+\.\d+\.\d+(.*)/;
+                regex = /(.*)v\d+\.\d+\.\d+(.*)/;
 
             // If a version is specified, we want to go through and find where 
             // the version is specified in the license, then replace it with the 

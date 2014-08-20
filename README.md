@@ -48,7 +48,7 @@ interface IConfig {
 
     /**
      * The path to the license file to be added to the build as a
-     * comment. If a version is specified, the v.0.0.0.0 in the 
+     * comment. If a version is specified, the v0.0.0 in the 
      * license will be replaced with the version.
      */
     license?: string;
