@@ -13,6 +13,7 @@ function buildContents(lines: Array<string>) {
         moduleName = '',
         previousLine = '',
         currentLines: Array<string> = [],
+        commentLines: Array<string> = [],
         line: string;
 
     for (var index = 0; index < lines.length; ++index) {
@@ -21,10 +22,10 @@ function buildContents(lines: Array<string>) {
         // Handles comment blocks
         while (line.indexOf('/*') !== -1) {
             if (index > 0 && !!previousLine) {
-                currentLines.push('');
+                commentLines.push('');
             }
 
-            currentLines.push(prepend + lines[index]);
+            commentLines.push(prepend + lines[index]);
 
             // If we reach the end of lines, we can return
             if (++index === lines.length) {
@@ -35,7 +36,7 @@ function buildContents(lines: Array<string>) {
 
             // Find the end of the comment block
             while (line.indexOf('*/') === -1) {
-                currentLines.push(prepend + line);
+                commentLines.push(prepend + line);
 
                 if (++index === lines.length) {
                     break;
@@ -49,7 +50,7 @@ function buildContents(lines: Array<string>) {
             // Check if there is another comment block on the same line as the 
             // end comment.
             if (substringLine.indexOf('/*') === -1) {
-                currentLines.push(prepend + line);
+                commentLines.push(prepend + line);
                 line = globals.removeCommentsAndStrings(lines[++index]);
                 break;
             } else if (substringLine.indexOf('/*') === 0) {
@@ -67,7 +68,7 @@ function buildContents(lines: Array<string>) {
                 lines.splice(index + 1, 0, whitespace + lines[index].substr(startSubstring, i - startSubstring).trim());
                 lines[index] = lines[index].substring(0, startSubstring);
 
-                currentLines.push(prepend + lines[index]);
+                commentLines.push(prepend + lines[index]);
 
                 line = globals.removeCommentsAndStrings(lines[++index]);
 
@@ -87,6 +88,7 @@ function buildContents(lines: Array<string>) {
             moduleName = line.replace('{', '').split(intermediarySpaceRegex)[1];
 
             var mod = Module.fetch(root, moduleName);
+            mod.docs.push(new Writer(commentLines));
             index = buildModule(mod, lines, index + 1);
 
             // Add the new module to the root as a writer for output
@@ -95,9 +97,11 @@ function buildContents(lines: Array<string>) {
             currentLines.push('');
             line = '';
         } else {
+            currentLines = currentLines.concat(commentLines);
             currentLines.push(prepend + lines[index]);
         }
 
+        commentLines = [];
         previousLine = line;
     }
 

@@ -66,6 +66,11 @@ class Module {
     writers: Array<Writer> = [];
 
     /**
+     * A list of Writer objects used to output any documentation that appears before a module is defined.
+     */
+    docs: Array<Writer> = [];
+
+    /**
      * The full period-delimited name path of a module from the root 
      * module.
      */

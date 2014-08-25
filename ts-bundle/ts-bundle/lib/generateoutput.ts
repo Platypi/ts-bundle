@@ -35,6 +35,13 @@ function generateOutput(currentModule: Module) {
 
     var previousLine = '';
 
+    currentModule.docs.forEach((writer) => {
+        // We pass the generateOutput function into the write method so we 
+        // can continue processing the modules recursively after the writer 
+        // writes the module lines.
+        previousLine = writer.write(output, previousLine, generateOutput);
+    });
+
     // The root module will always have its module definition in its 
     // writers if necessary.
     if (!isRoot) {
@@ -44,10 +51,6 @@ function generateOutput(currentModule: Module) {
     output.push(prependedTabs + previousLine);
 
     currentModule.writers.forEach((writer) => {
-
-        // We pass the generateOutput function into the write method so we 
-        // can continue processing the modules recursively after the writer 
-        // writes the module lines.
         previousLine = writer.write(output, previousLine, generateOutput);
     });
 
