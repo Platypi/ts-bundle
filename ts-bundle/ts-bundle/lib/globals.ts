@@ -48,6 +48,15 @@ export interface IConfig {
      * Disables tslint on the output file.
      */
     disableLint?: boolean;
+
+    /**
+     * Called prior to saving the output, you can stip out any extra 
+     * text that you might not want.
+     * 
+     * @param data The data to manipulate.
+     * @param done A callback to call in order to save the data.
+     */
+    preSave? (data: string, done: (data: string) => void): void;
 }
 
 function isString(obj: any): boolean {
@@ -96,6 +105,8 @@ export function initialize(cfg: IConfig) {
 
     rootModule = new Module(config.rootModule || windowName);
 
+    config.preSave = config.preSave || defaultPreSave;
+
     return config;
 }
 
@@ -103,10 +114,10 @@ export var config: IConfig,
     windowName = 'window',
     rootModule: Module,
     output: Array<string> = [],
-    
+
     // Finds all the <script src="" /> tags
     srcRegex = /src=("[^"]*)/,
-    
+
     // Finds the plat-start comment Node
     startRegex = /<!--\s*ts-bundle-start/,
 
@@ -177,4 +188,15 @@ export function addWriters(mod: Module, root: Module) {
         }
         mod = mod.parent;
     }
+}
+
+/**
+ * Called prior to saving the output, you can stip out any extra 
+ * text that you might not want.
+ * 
+ * @param data The data to manipulate.
+ * @param done A callback to call in order to save the data.
+ */
+function defaultPreSave(data: string, done: (data: string) => void) {
+    done(data);
 }

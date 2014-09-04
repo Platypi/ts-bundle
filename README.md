@@ -57,5 +57,14 @@ interface IConfig {
      * Disables tslint on the output file.
      */
     disableLint?: boolean;
+
+    /**
+     * Called prior to saving the output, you can stip out any extra 
+     * text that you might not want.
+     * 
+     * @param data The data to manipulate.
+     * @param done A callback to call in order to save the data.
+     */
+    preSave? (data: string, done: (data: string) => void): void;
 }
 ```

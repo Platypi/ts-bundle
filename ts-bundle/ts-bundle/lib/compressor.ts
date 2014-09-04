@@ -51,7 +51,8 @@ function compress(config?: globals.IConfig, callback?: (err) => void) {
         output = globals.output,
         dest = globals.config.dest,
         version = globals.config.version,
-        license = globals.config.license;
+        license = globals.config.license,
+        preSave = globals.config.preSave;
 
     // Goes through each file in the dest files and makes sure they have a 
     // .ts extension.
@@ -153,7 +154,9 @@ function compress(config?: globals.IConfig, callback?: (err) => void) {
                 }
             });
 
-            writeToFile(destPath, output);
+            preSave(output.join('\n'), (data) => {
+                writeToFile(destPath, data.split(/\r\n|\n/g));
+            });
         });
 
         callback(err);
