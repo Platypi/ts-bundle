@@ -38,7 +38,7 @@ function getFiles(data: string) {
             return false;
         }
 
-        var exec = globals.srcRegex.exec(line);
+        var exec = globals.fileRegex.exec(line);
 
         // Ignore the tag if it is not a script tag with a *.js src value.
         if (!exec) {
