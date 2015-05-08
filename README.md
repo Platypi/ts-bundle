@@ -21,9 +21,9 @@ bundle({
 ```typescript
 interface IConfig {
     /**
-     * The index.html file used to find all the *.ts files and 
-     * build them in order. Starts at the <!-- ts-bundle-start -->
-     * comment and ends at <!-- ts-bundle-end -->
+     * The references.d.ts file used to find all the *.ts files and 
+     * build them in order. Starts at the // ts-bundle-start
+     * comment and ends at // ts-bundle-end
      */
     src: string;
 
