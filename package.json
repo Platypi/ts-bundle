@@ -22,8 +22,16 @@
     "node": ">=0.10.0"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "tsd": "^0.6.0-beta.5",
+    "typescript": "1.5.0-alpha"
+  },
   "bugs": {
     "url": "https://github.com/Platypi/ts-bundle/issues"
+  },
+  "scripts": {
+    "prepublish": "npm run tsd && npm run build",
+    "tsd": "./node_modules/.bin/tsd update -so",
+    "build": "./node_modules/.bin/tsc -p ."
   }
 }

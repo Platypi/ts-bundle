@@ -1,7 +1,8 @@
-﻿import Writer = require('./writer');
+﻿/// <reference path="../references.d.ts" />
+
+import Writer = require('./writer');
 
 class Module {
-
     /**
      * Locates and returns Module in a module tree, given a period-delimited name identifier. 
      * If a module does not exist, a new one is created.
@@ -53,7 +54,7 @@ class Module {
     /**
      * An Object containing key/value pairs of module name: Module
      */
-    children = {};
+    children: { [key: string]: Module; } = {};
 
     /**
      * A list of the fullnames for every child in of the module.

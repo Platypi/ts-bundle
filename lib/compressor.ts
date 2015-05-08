@@ -1,4 +1,4 @@
-﻿/// <reference path="../typings/tsd.d.ts" />
+﻿/// <reference path="../references.d.ts" />
 
 import fs = require('fs');
 import path = require('path');
@@ -43,7 +43,7 @@ function generateAmbientDeclaration(output: Array<string>) {
  * @param callback Since this is asynchronous, we need a callback to know 
  * when the task is complete.
  */
-function compress(config?: globals.IConfig, callback?: (err) => void) {
+function compress(config?: globals.IConfig, callback?: (err: any) => void) {
     globals.initialize(config);
 
     var src = path.resolve(globals.config.src),

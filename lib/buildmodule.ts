@@ -1,4 +1,6 @@
-﻿import Module = require('./module');
+﻿/// <reference path="../references.d.ts" />
+
+import Module = require('./module');
 import Writer = require('./writer');
 import globals = require('./globals');
 

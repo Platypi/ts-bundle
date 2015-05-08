@@ -1,4 +1,6 @@
-﻿import Module = require('./module');
+﻿/// <reference path="../references.d.ts" />
+
+import Module = require('./module');
 
 class Writer {
     private __module: Module;
@@ -17,7 +19,7 @@ class Writer {
      * @param mod The module to set for this writer.
      */
     constructor(mod: Module);
-    constructor(operator) {
+    constructor(operator: any) {
         if (Array.isArray(operator)) {
             this.__lines = operator;
             return;

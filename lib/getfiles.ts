@@ -1,4 +1,6 @@
-﻿import globals = require('./globals');
+﻿/// <reference path="../references.d.ts" />
+
+import globals = require('./globals');
 
 /**
  * Iterates through the index.html file data, finding all the 
@@ -16,7 +18,7 @@ function getFiles(data: string) {
     }
 
     var lines = data.split(/\r\n|\n/),
-        files = [],
+        files: Array<string> = [],
         running = false;
 
     // We want to go through the lines until we hit an end tag.

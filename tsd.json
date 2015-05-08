@@ -5,11 +5,8 @@
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
-    "gruntjs/gruntjs.d.ts": {
-      "commit": "7ccc55d5f026751df3ea87fe5a9ec8bf09a60905"
-    },
     "node/node.d.ts": {
-      "commit": "7ccc55d5f026751df3ea87fe5a9ec8bf09a60905"
+      "commit": "b3834d886a95789e6ab56e8244775ec10c5293d0"
     }
   }
 }

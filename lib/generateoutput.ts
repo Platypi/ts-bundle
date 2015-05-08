@@ -1,4 +1,6 @@
-﻿import globals = require('./globals');
+﻿/// <reference path="../references.d.ts" />
+
+import globals = require('./globals');
 import Module = require('./module');
 
 var output = globals.output;
