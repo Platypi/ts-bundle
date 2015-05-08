@@ -41,11 +41,11 @@ function getFiles(data: string) {
         var exec = globals.srcRegex.exec(line);
 
         // Ignore the tag if it is not a script tag with a *.js src value.
-        if (!exec || exec[1].indexOf('.js') === -1) {
+        if (!exec) {
             return false;
         }
 
-        files.push(exec[1].replace('.js', '.ts').substr(1));
+        files.push(exec[1].substr(1));
 
         return false;
     });

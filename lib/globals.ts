@@ -70,8 +70,8 @@ function isArray(obj: any): boolean {
 function validate(config: IConfig): Array<string> {
     var errors: Array<string> = [];
 
-    if (!isString(config.src) || config.src.indexOf('.html') < 0) {
-        errors.push('Error: src config property must be a string locating the html file for the bundle');
+    if (!isString(config.src) || config.src.indexOf('.ts') < 0) {
+        errors.push('Error: src config property must be a string locating the .ts file for the bundle');
     }
 
     if (!isArray(config.dest)) {
@@ -115,14 +115,14 @@ export var config: IConfig,
     rootModule: Module,
     output: Array<string> = [],
 
-    // Finds all the <script src="" /> tags
-    srcRegex = /src=("[^"]*)/,
+    // Finds all the <reference path="" /> tags
+    fileRegex = /path=("[^"]*)/,
 
-    // Finds the plat-start comment Node
-    startRegex = /<!--\s*ts-bundle-start/,
+    // Finds the ts-bundle-start comment Node
+    startRegex = /\/\/\sts-bundle-start/,
 
-    // Finds the plat-end comment Node
-    endRegex = /<!--\s*ts-bundle-end/,
+    // Finds the ts-bundle-end comment Node
+    endRegex = /\/\/\sts-bundle-end/,
 
     // Finds all comments and strings on a line
     commentAndStringRegex = /(?:\/\*.*\*\/)|(?:'(?:[^'])*')|(?:"(?:[^"])*")|(?:\/(?:[^/])+\/)/g,

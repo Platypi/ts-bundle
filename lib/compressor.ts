@@ -74,8 +74,8 @@ function compress(config?: globals.IConfig, callback?: (err: any) => void) {
         if (files.length === 0) {
             return callback(
                 new Error(
-                    'No files found to bundle, do you have <!-- ts-bundle-start --> and <!-- ts-bundle-end --> in your src file?'
-                    ));
+                    'No files found to bundle, do you have "// ts-bundle-start" and "// ts-bundle-end" in your src file?'
+                ));
         }
 
         // Gather all the lines from all the files into an array.
