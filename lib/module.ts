@@ -1,19 +1,17 @@
-﻿/// <reference path="../references.d.ts" />
+﻿import Writer from './writer';
 
-import Writer = require('./writer');
-
-class Module {
+export default class Module {
     /**
-     * Locates and returns Module in a module tree, given a period-delimited name identifier. 
+     * Locates and returns Module in a module tree, given a period-delimited name identifier.
      * If a module does not exist, a new one is created.
-     * 
+     *
      * @param root The starting module used to begin the search for a module.
-     * @param name A period-delimited string specifying the module. The final value after the 
+     * @param name A period-delimited string specifying the module. The final value after the
      * last period is the name of the module.
      * @param isExported Whether or not the module is internal or external.
      */
     static fetch(root: Module, name: string, isExported: boolean = false): Module {
-        // If no root module is passed in, or the module name matches the root name, 
+        // If no root module is passed in, or the module name matches the root name,
         // we want to return the root module.
         if (!root || name === root.name) {
             return root;
@@ -23,7 +21,7 @@ class Module {
             name = name.replace(root.name + '.', '');
         }
 
-        var split = name.split('.'),
+        let split = name.split('.'),
             child: Module;
 
         // If root has a child for the first part of the name
@@ -39,7 +37,7 @@ class Module {
         }
 
         child = new Module(split[0], root, true);
-        
+
         root.children[split[0]] = child;
         split.shift();
 
@@ -50,7 +48,7 @@ class Module {
         // Any child modules will need to be exported
         return Module.fetch(child, split.join('.'), true);
     }
-    
+
     /**
      * An Object containing key/value pairs of module name: Module
      */
@@ -72,14 +70,14 @@ class Module {
     docs: Array<Writer> = [];
 
     /**
-     * The full period-delimited name path of a module from the root 
+     * The full period-delimited name path of a module from the root
      * module.
      */
     fullName: string;
     constructor(public name: string,
         public parent: Module = null,
         public isExported: boolean = false) {
-        var fullname = name,
+        let fullname = name,
             current = parent;
 
         while (current) {
@@ -90,5 +88,3 @@ class Module {
         this.fullName = fullname;
     }
 }
-
-export = Module;

@@ -1,9 +1,7 @@
-﻿/// <reference path="../references.d.ts" />
+﻿import * as globals from './globals';
+import Module from './module';
 
-import globals = require('./globals');
-import Module = require('./module');
-
-var output = globals.output;
+let output = globals.output;
 
 function removeEmptyStringsFromEnd(output: Array<string>) {
     while (!output[output.length - 1]) {
@@ -12,15 +10,15 @@ function removeEmptyStringsFromEnd(output: Array<string>) {
 }
 
 /**
- * Iterates through a module's writers and invokes their write 
- * function, building the output array. This method is recursive 
- * because we want to build the output in a logical order, corresponding 
+ * Iterates through a module's writers and invokes their write
+ * function, building the output array. This method is recursive
+ * because we want to build the output in a logical order, corresponding
  * to the file order in the index.html.
- * 
+ *
  * @param currentModule The module whose writers need to be called.
  */
-function generateOutput(currentModule: Module) {
-    var root = globals.rootModule,
+export default function generateOutput(currentModule: Module) {
+    let root = globals.rootModule,
         prependedTabs = globals.getPrependedTabs(currentModule),
         isRoot = currentModule === root && currentModule.name === globals.windowName,
         str = 'module ';
@@ -28,23 +26,23 @@ function generateOutput(currentModule: Module) {
     if (currentModule.isExported &&
         currentModule !== root &&
 
-        // If parent is not root, we don't care if it shares the same name as 
+        // If parent is not root, we don't care if it shares the same name as
         // the window module
         (currentModule.parent !== root ||
          currentModule.parent.name !== globals.windowName)) {
         str = 'export ' + str;
     }
 
-    var previousLine = '';
+    let previousLine = '';
 
     currentModule.docs.forEach((writer) => {
-        // We pass the generateOutput function into the write method so we 
-        // can continue processing the modules recursively after the writer 
+        // We pass the generateOutput function into the write method so we
+        // can continue processing the modules recursively after the writer
         // writes the module lines.
         previousLine = writer.write(output, previousLine, generateOutput);
     });
 
-    // The root module will always have its module definition in its 
+    // The root module will always have its module definition in its
     // writers if necessary.
     if (!isRoot) {
         previousLine = str + currentModule.name + ' {';
@@ -59,11 +57,9 @@ function generateOutput(currentModule: Module) {
     removeEmptyStringsFromEnd(output);
 
 
-    // The root module will always have a closing curly brace for its module 
+    // The root module will always have a closing curly brace for its module
     // definition in its writers if necessary.
     if (!isRoot) {
         output.push(prependedTabs + '}');
     }
 }
-
-export = generateOutput;

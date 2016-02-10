@@ -1,16 +1,14 @@
-﻿/// <reference path="../references.d.ts" />
+﻿import Module from './module';
+import Writer from './writer';
+import * as globals from './globals';
 
-import Module = require('./module');
-import Writer = require('./writer');
-import globals = require('./globals');
-
-var commentsRemainingRegex = globals.commentsRemainingRegex,
+let commentsRemainingRegex = globals.commentsRemainingRegex,
     whitespaceRegex = globals.whitespaceRegex,
     intermediarySpaceRegex = globals.intermediarySpaceRegex,
     exportModuleRegex = globals.exportModuleRegex;
 
-function buildModule(currentModule: Module, lines: Array<string>, index: number) {
-    var leftBraceCount = 0,
+export default function buildModule(currentModule: Module, lines: Array<string>, index: number) {
+    let leftBraceCount = 0,
         rightBraceCount = 0,
         moduleName = '',
         prependedTabs = globals.getPrependedTabs(currentModule),
@@ -59,10 +57,10 @@ function buildModule(currentModule: Module, lines: Array<string>, index: number)
                 line = lines[index];
             }
 
-            var substringLine = line.substr(line.indexOf('*/') + 2);
+            let substringLine = line.substr(line.indexOf('*/') + 2);
             substringLine = globals.removeCommentsAndStrings(substringLine);
 
-            // Check if there is another comment block on the same line as the 
+            // Check if there is another comment block on the same line as the
             // end comment.
             if (substringLine.indexOf('/*') === -1) {
                 currentLines.push(prependedTabs + line);
@@ -71,15 +69,15 @@ function buildModule(currentModule: Module, lines: Array<string>, index: number)
             } else if (substringLine.indexOf('/*') === 0) {
                 line = substringLine;
             } else {
-                // We have a new comment block, so we need to cut out the whitespace 
-                // between the end comment and beginning comment, and add a new line 
+                // We have a new comment block, so we need to cut out the whitespace
+                // between the end comment and beginning comment, and add a new line
                 // to break up the comment block.
-                var i = lines[index].indexOf('/*'),
+                let i = lines[index].indexOf('/*'),
                     whitespace = lines[index].match(whitespaceRegex)[0];
 
                 lines.splice(index + 1, 0, whitespace + lines[index].substr(i));
 
-                var startSubstring = lines[index].indexOf('*/') + 2;
+                let startSubstring = lines[index].indexOf('*/') + 2;
                 lines.splice(index + 1, 0, whitespace + lines[index].substr(startSubstring, i - startSubstring).trim());
                 lines[index] = lines[index].substring(0, startSubstring);
                 currentLines.push(prependedTabs + lines[index]);
@@ -105,7 +103,7 @@ function buildModule(currentModule: Module, lines: Array<string>, index: number)
             }
 
             if (currentLines.length > 0) {
-                // Push all the current lines to a new Writer because we are going to 
+                // Push all the current lines to a new Writer because we are going to
                 // reset current lines.
                 currentModule.writers.push(new Writer(currentLines));
                 currentLines = [];
@@ -114,14 +112,14 @@ function buildModule(currentModule: Module, lines: Array<string>, index: number)
             moduleName = line.replace('{', '').split(intermediarySpaceRegex)[2];
 
             // Find/create the new module so we can begin building its contents
-            var mod = Module.fetch(currentModule, moduleName, true);
+            let mod = Module.fetch(currentModule, moduleName, true);
             index = buildModule(mod, lines, index + 1);
 
             globals.addWriters(mod, currentModule);
             continue;
         }
 
-        // Count right and left curly braces to know when we have reached the 
+        // Count right and left curly braces to know when we have reached the
         // end of a module.
         left = line.match(/{/g) || [];
         right = line.match(/}/g) || [];
@@ -141,5 +139,3 @@ function buildModule(currentModule: Module, lines: Array<string>, index: number)
     currentModule.writers.push(new Writer(currentLines));
     return index;
 }
-
-export = buildModule;

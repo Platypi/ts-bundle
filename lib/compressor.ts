@@ -1,15 +1,13 @@
-﻿/// <reference path="../references.d.ts" />
-
-import fs = require('fs');
-import path = require('path');
-import globals = require('./globals');
-import getFiles = require('./getfiles');
-import buildContents = require('./buildcontents');
-import generateOutput = require('./generateoutput');
+﻿import * as fs from 'fs';
+import * as path from 'path';
+import * as globals from './globals';
+import getFiles from './getfiles';
+import buildContents from './buildcontents';
+import generateOutput from './generateoutput';
 
 function writeToFile(path: string, data: Array<string>) {
     try {
-        var fd = fs.openSync(path, 'w'),
+        let fd = fs.openSync(path, 'w'),
             buffer = new Buffer(data.join('\n'), 'utf8');
 
         fs.writeSync(fd, buffer, 0, buffer.length, 0);
@@ -20,7 +18,7 @@ function writeToFile(path: string, data: Array<string>) {
 }
 
 function generateAmbientDeclaration(output: Array<string>) {
-    var config = globals.config,
+    let config = globals.config,
         exportRoot = config.exportRoot,
         rootModule = config.rootModule;
 
@@ -36,17 +34,17 @@ function generateAmbientDeclaration(output: Array<string>) {
 }
 
 /**
- * Uses the config to go through all of the framework *.ts files in the 
+ * Uses the config to go through all of the framework *.ts files in the
  * proper order and compresses them into a single file for packaging.
- * 
+ *
  * @param config The configuration for compressing the files.
- * @param callback Since this is asynchronous, we need a callback to know 
+ * @param callback Since this is asynchronous, we need a callback to know
  * when the task is complete.
  */
 function compress(config?: globals.IConfig, callback?: (err: any) => void) {
     globals.initialize(config);
 
-    var src = path.resolve(globals.config.src),
+    let src = path.resolve(globals.config.src),
         root = globals.rootModule,
         output = globals.output,
         dest = globals.config.dest,
@@ -54,20 +52,20 @@ function compress(config?: globals.IConfig, callback?: (err: any) => void) {
         license = globals.config.license,
         preSave = globals.config.preSave;
 
-    // Goes through each file in the dest files and makes sure they have a 
+    // Goes through each file in the dest files and makes sure they have a
     // .ts extension.
     dest.forEach((outFile, index) => {
-        var end = outFile.lastIndexOf('.');
+        let end = outFile.lastIndexOf('.');
         dest[index] = outFile.substring(0, (end > -1) ? end : undefined) + '.ts';
     });
 
-    // Reads the src file, creates a Module tree, builds the contents for each 
+    // Reads the src file, creates a Module tree, builds the contents for each
     // module in the proper order, and generates the output file.
     fs.readFile(src, 'utf8', (err, data) => {
         if (err) {
             return callback(err);
         }
-        var files = getFiles(data),
+        let files = getFiles(data),
             fileData = '',
             allLines: Array<string> = [];
 
@@ -81,7 +79,7 @@ function compress(config?: globals.IConfig, callback?: (err: any) => void) {
         // Gather all the lines from all the files into an array.
         files.forEach((file) => {
             fileData = fs.readFileSync(path.resolve(src, '..', file), 'utf8');
-            var lines = fileData.split(/\r\n|\n/);
+            let lines = fileData.split(/\r\n|\n/);
             lines[0] = lines[0].trim();
             allLines = allLines.concat(lines);
         });
@@ -91,13 +89,13 @@ function compress(config?: globals.IConfig, callback?: (err: any) => void) {
 
         // If a license file is specified, we want to prepend it to the output.
         if (!!license) {
-            var licenseFile = path.resolve(license),
+            let licenseFile = path.resolve(license),
                 licenseData = fs.readFileSync(licenseFile, 'utf8'),
                 lines = licenseData.split(/\r\n|\n/),
                 regex = /(.*)v\d+\.\d+\.\d+(.*)/;
 
-            // If a version is specified, we want to go through and find where 
-            // the version is specified in the license, then replace it with the 
+            // If a version is specified, we want to go through and find where
+            // the version is specified in the license, then replace it with the
             // passed-in version.
             if (!!version) {
                 lines.some((line, index) => {
@@ -132,11 +130,11 @@ function compress(config?: globals.IConfig, callback?: (err: any) => void) {
             output.push('');
         }
 
-        // Go through each destination file and make sure we can 
-        // write a file to the location, making new directories 
+        // Go through each destination file and make sure we can
+        // write a file to the location, making new directories
         // if necessary. Then write the output to each destination.
         dest.forEach((destFile) => {
-            var destPath = path.resolve(destFile),
+            let destPath = path.resolve(destFile),
                 split = path.resolve(destPath, '..').split(/\/|\\/),
                 concat = '';
 

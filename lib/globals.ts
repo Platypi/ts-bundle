@@ -1,33 +1,31 @@
-﻿/// <reference path="../references.d.ts" />
-
-import Writer = require('./writer');
-import Module = require('./module');
+﻿import Writer from './writer';
+import Module from './module';
 
 export interface IConfig {
     /**
-     * The index.html file used to find all the *.ts files and 
+     * The index.html file used to find all the *.ts files and
      * build them in order. Starts at the <!-- ts-bundle-start -->
      * comment and ends at <!-- ts-bundle-end -->
      */
     src: string;
 
     /**
-     * An array of destination file paths. Once the framework 
+     * An array of destination file paths. Once the framework
      * is built, it will be output to these paths.
      */
     dest: Array<string>;
 
     /**
-     * An optional root module to define as the encompassing 
-     * module for the framework (i.e. 'plat'). All lines that 
-     * are on the window will be put into this module. If no 
+     * An optional root module to define as the encompassing
+     * module for the framework (i.e. 'plat'). All lines that
+     * are on the window will be put into this module. If no
      * value is specified, window lines will remain on the window.
      */
     rootModule?: string;
 
     /**
-     * If true, we assume you have logic included to export your 
-     * root module for CommonJS/AMD. We will add an ambient 
+     * If true, we assume you have logic included to export your
+     * root module for CommonJS/AMD. We will add an ambient
      * typescript declaration into the output file.
      */
     exportRoot?: boolean;
@@ -39,7 +37,7 @@ export interface IConfig {
 
     /**
      * The path to the license file to be added to the build as a
-     * comment. If a version is specified, the v.0.0.0.0 in the 
+     * comment. If a version is specified, the v.0.0.0.0 in the
      * license will be replaced with the version.
      */
     license?: string;
@@ -50,9 +48,9 @@ export interface IConfig {
     disableLint?: boolean;
 
     /**
-     * Called prior to saving the output, you can stip out any extra 
+     * Called prior to saving the output, you can stip out any extra
      * text that you might not want.
-     * 
+     *
      * @param data The data to manipulate.
      * @param done A callback to call in order to save the data.
      */
@@ -68,7 +66,7 @@ function isArray(obj: any): boolean {
 }
 
 function validate(config: IConfig): Array<string> {
-    var errors: Array<string> = [];
+    let errors: Array<string> = [];
 
     if (!isString(config.src) || config.src.indexOf('.ts') < 0) {
         errors.push('Error: src config property must be a string locating the .ts file for the bundle');
@@ -83,7 +81,7 @@ function validate(config: IConfig): Array<string> {
 
 /**
  * Creates the config, and rootModule if necessary.
- * 
+ *
  * @param cfg The root config.
  */
 export function initialize(cfg: IConfig) {
@@ -96,7 +94,7 @@ export function initialize(cfg: IConfig) {
         config.dest = [<string><any>cfg.dest];
     }
 
-    var errors = validate(config);
+    let errors = validate(config);
 
     if (errors.length > 0) {
         errors.forEach((error) => { console.log(error); });
@@ -110,7 +108,7 @@ export function initialize(cfg: IConfig) {
     return config;
 }
 
-export var config: IConfig,
+export let config: IConfig,
     windowName = 'window',
     rootModule: Module,
     output: Array<string> = [],
@@ -140,9 +138,9 @@ export var config: IConfig,
     exportModuleRegex = /^export(?:\s|\t)+module/;
 
 /**
- * Removes all the comments and strings on a line, and trims the 
+ * Removes all the comments and strings on a line, and trims the
  * whitespace from the ends.
- * 
+ *
  * @param line The line with which to remove comments and strings.
  */
 export function removeCommentsAndStrings(line: string) {
@@ -150,9 +148,9 @@ export function removeCommentsAndStrings(line: string) {
 }
 
 /**
- * Traverses the Module tree and creates a whitespace variable with 
+ * Traverses the Module tree and creates a whitespace variable with
  * 4 spaces for every module up to the root module.
- * 
+ *
  * @param mod The module from which to start the traversing
  */
 export function getPrependedTabs(mod: Module) {
@@ -160,7 +158,7 @@ export function getPrependedTabs(mod: Module) {
         return '';
     }
 
-    var isExported = mod.isExported,
+    let isExported = mod.isExported,
         prepend = isExported && mod.parent ? '    ' : '';
 
     while (!!(mod = mod.parent)) {
@@ -176,7 +174,7 @@ export function getPrependedTabs(mod: Module) {
 
 /**
  * Adds writers for a module all the way to the specified root module.
- * 
+ *
  * @param mod The starting module in the tree
  * @param root The root module at which to stop adding writers
  */
@@ -191,9 +189,9 @@ export function addWriters(mod: Module, root: Module) {
 }
 
 /**
- * Called prior to saving the output, you can stip out any extra 
+ * Called prior to saving the output, you can stip out any extra
  * text that you might not want.
- * 
+ *
  * @param data The data to manipulate.
  * @param done A callback to call in order to save the data.
  */
