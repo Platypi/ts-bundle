@@ -23,19 +23,14 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "tsconfig-glob": "^0.4.1",
-    "tsconfig-lint": "^0.5.0",
-    "typescript": "^1.7.5",
-    "typings": "^0.6.7"
+    "@types/node": "^9.4.6",
+    "typescript": "^2.7.2"
   },
   "bugs": {
     "url": "https://github.com/Platypi/ts-bundle/issues"
   },
   "scripts": {
-    "prepublish": "npm run typings && npm run build",
-    "typings": "typings install",
-    "build": "tsconfig && tsc -p .",
-    "tsconfig": "tsconfig",
-    "lint": "tsconfig-lint --use-glob"
+    "prepublishOnly": "npm run build",
+    "build": "tsc -p ."
   }
 }

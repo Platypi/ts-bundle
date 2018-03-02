@@ -8,21 +8,8 @@
         "sourceMap": false,
         "watch": false
     },
-    "filesGlob": [
-        "*.ts",
-        "lib/*.ts",
-        "typings/main.d.ts"
-    ],
-    "files": [
-        "typings/main.d.ts",
+    "include": [
         "index.ts",
-        "lib/buildcontents.ts",
-        "lib/buildmodule.ts",
-        "lib/compressor.ts",
-        "lib/generateoutput.ts",
-        "lib/getfiles.ts",
-        "lib/globals.ts",
-        "lib/module.ts",
-        "lib/writer.ts"
+        "lib/*.ts"
     ]
 }

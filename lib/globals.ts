@@ -48,7 +48,7 @@ export interface IConfig {
     disableLint?: boolean;
 
     /**
-     * Called prior to saving the output, you can stip out any extra
+     * Called prior to saving the output, you can strip out any extra
      * text that you might not want.
      *
      * @param data The data to manipulate.
@@ -123,7 +123,7 @@ export let config: IConfig,
     endRegex = /\/\/\sts-bundle-end/,
 
     // Finds all comments and strings on a line
-    commentAndStringRegex = /(?:\/\*.*\*\/)|(?:'(?:[^'])*')|(?:"(?:[^"])*")|(?:\/(?:[^/])+\/)/g,
+    commentAndStringRegex = /(?:\/\*.*\*\/)|(?:'(?:[^'])*')|(?:"(?:[^"])*")|(?:`(?:[^`])*`)|(?:\/(?:[^/])+\/)/g,
 
     // Finds all whitespace on a line
     whitespaceRegex = /^\s*/,
@@ -135,7 +135,7 @@ export let config: IConfig,
     intermediarySpaceRegex = /(?:\s|\t)+/,
 
     // Determines if "export module" is found on a line
-    exportModuleRegex = /^export(?:\s|\t)+module/;
+    exportModuleRegex = /^export(?:\s|\t)+(?:module|namespace)/;
 
 /**
  * Removes all the comments and strings on a line, and trims the
@@ -189,7 +189,7 @@ export function addWriters(mod: Module, root: Module) {
 }
 
 /**
- * Called prior to saving the output, you can stip out any extra
+ * Called prior to saving the output, you can strip out any extra
  * text that you might not want.
  *
  * @param data The data to manipulate.
