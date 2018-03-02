@@ -1,6 +1,6 @@
 {
   "name": "ts-bundle",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A package bundler for TypeScript",
   "author": {
     "name": "Platypi",
