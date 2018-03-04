@@ -21,7 +21,7 @@ export default function generateOutput(currentModule: Module) {
     let root = globals.rootModule,
         prependedTabs = globals.getPrependedTabs(currentModule),
         isRoot = currentModule === root && currentModule.name === globals.windowName,
-        str = 'module ';
+        str = 'namespace ';
 
     if (currentModule.isExported &&
         currentModule !== root &&

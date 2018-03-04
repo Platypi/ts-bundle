@@ -79,7 +79,7 @@ export default function buildContents(lines: Array<string>) {
 
         line = line.replace(commentsRemainingRegex, '').trim();
 
-        if (line.indexOf('module ') === 0) {
+        if (/^(?:module|namespace)\s/.test(line)) {
             // We found a new module, so we need to add the remaining currentLines
             // to the root module, then build the new module lines.
             if (currentLines.length > 0) {
